@@ -58,16 +58,20 @@ function Detail() {
             dataIndex: "collecttime",
           },
           {
-            title: "未审核",
-            dataIndex: "wsh",
+            title: "站点名称",
+            dataIndex: "stationname",
           },
           {
-            title: "待上报",
+            title: "审核状态",
             dataIndex: "sb",
           },
           {
-            title: "复核退回",
-            dataIndex: "fhth",
+            title: "审核人",
+            dataIndex: "auditusername",
+          },
+          {
+            title: "审核时间",
+            dataIndex: "auditdate",
           },
         ]}
       />
