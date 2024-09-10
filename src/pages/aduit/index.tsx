@@ -22,11 +22,20 @@ const Audit: React.FC = () => {
     <>
       <Table
         size="small"
-        dataSource={list}
+        dataSource={list.map((item, index) => {
+          return {
+            ...item,
+            key: index + 1,
+            wsh: item.wsh || 0,
+            sh: item.sh || 0,
+            sb: item.sb || 0,
+            fhth: item.fhth || 0,
+          };
+        })}
         columns={[
           {
             title: "序号",
-            dataIndex: "",
+            dataIndex: "key",
           },
           {
             title: "日期",
@@ -37,7 +46,11 @@ const Audit: React.FC = () => {
             dataIndex: "wsh",
           },
           {
-            title: "待上报",
+            title: "已审核",
+            dataIndex: "sh",
+          },
+          {
+            title: "已审核并上报",
             dataIndex: "sb",
           },
           {
