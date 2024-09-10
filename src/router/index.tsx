@@ -6,13 +6,13 @@ export const routes = [
   {
     path: "/",
     element: <Aduit />,
-    name: "Aduit",
+    name: "审核概况",
     icon: <UploadOutlined />,
   },
   {
     path: "/detail",
     element: <Detail />,
-    name: "Detail",
+    name: "审核详情",
     icon: <VideoCameraOutlined />,
   },
 ];

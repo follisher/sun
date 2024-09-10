@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Table } from "antd";
-import audit from "../../apis/audit";
+import { Card, DatePicker, Form, Space, Table } from "antd";
+import dayjs from 'dayjs'
+import auditApi from "../../apis/audit";
 import "./index.css";
 
 const Audit: React.FC = () => {
-  const [list, setList] = useState([]);
+  const [list, setList] = useState<AduitResult[]>([]);
 
   useEffect(() => {
     (async () => {
-      const { data } = await audit().list({
+      const { data } = await auditApi().list({
         begiontime: "2024-09-02",
         endtime: "2024-09-09",
       });
@@ -19,8 +20,16 @@ const Audit: React.FC = () => {
   }, []);
 
   return (
-    <>
+    <Space direction="vertical"  style={{width: '100%'}}>
+      <Card size="small" title="审核概况">
+        <Form layout="inline">
+          <Form.Item name="daterange">
+            <DatePicker.RangePicker format={'YYYY-MM-DD'} defaultValue={[dayjs(new Date()).subtract(7, 'day'), dayjs(new Date())]} />
+          </Form.Item>
+        </Form>
+      </Card>
       <Table
+        key="key"
         size="small"
         dataSource={list.map((item, index) => {
           return {
@@ -59,7 +68,7 @@ const Audit: React.FC = () => {
           },
         ]}
       />
-    </>
+    </Space>
   );
 };
 

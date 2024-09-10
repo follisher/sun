@@ -1,8 +1,10 @@
 import { post } from "../server";
 
-export default function audit() {
+export default function auditApi() {
   return {
-    list(data: { begiontime: string; endtime: string }) {
+    list(data: { begiontime: string; endtime: string }): Promise<{
+      data: AduitResult[]
+    }> {
       return post("/api/AuditData/GetAuditSurvey", data);
     },
     detail(data: {
