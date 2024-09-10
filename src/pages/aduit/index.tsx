@@ -7,12 +7,12 @@ import {
   VideoCameraOutlined,
 } from "@ant-design/icons";
 import { Button, Layout, Menu, Table, theme } from "antd";
-import audit from "./server/apis/audit";
-import "./App.css";
+import audit from "../../apis/audit";
+import "./index.css";
 
 const { Header, Sider, Content } = Layout;
 
-const App: React.FC = () => {
+const Audit: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
   const {
     token: { colorBgContainer, borderRadiusLG },
@@ -113,4 +113,4 @@ const App: React.FC = () => {
   );
 };
 
-export default App;
+export default Audit;
