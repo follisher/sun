@@ -5,10 +5,14 @@ export default function audit() {
     list(data: { begiontime: string; endtime: string }) {
       return post("/api/AuditData/GetAuditSurvey", data);
     },
-    detail() {
-      return post(
-        "/api/AuditData/GetAuditDataDay?begiontime=2024-09-07&endtime=2024-09-09&areapath=000000_970000_97120000_97122400&key=&state=0&statetype=audit"
-      );
+    detail(data: {
+      begiontime: string;
+      endtime: string;
+      areapath: string;
+      statetype: "audit";
+      state: number;
+    }) {
+      return post("/api/AuditData/GetAuditDataDay", data);
     },
   };
 }
