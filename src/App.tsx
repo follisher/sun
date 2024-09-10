@@ -7,7 +7,7 @@ import {
   VideoCameraOutlined,
 } from "@ant-design/icons";
 import { Button, Layout, Menu, Table, theme } from "antd";
-import audit from "./server/apis/audt";
+import audit from "./server/apis/audit";
 import "./App.css";
 
 const { Header, Sider, Content } = Layout;
@@ -21,7 +21,10 @@ const App: React.FC = () => {
 
   useEffect(() => {
     (async () => {
-      const { data } = await audit().list();
+      const { data } = await audit().list({
+        begiontime: "2024-09-02",
+        endtime: "2024-09-09",
+      });
       if (Array.isArray(data)) {
         setList(data);
       }
