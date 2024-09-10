@@ -26,12 +26,12 @@ const Audit: React.FC = () => {
           return {
             ...item,
             key: index + 1,
-            wsh: item.wsh === null || item.wsh === undefined ? 0 : item.wsh,
-            sh: item.sh === null || item.sh === undefined ? 0 : item.sh,
-            sb: item.sb === null || item.sb === undefined ? 0 : item.sb,
-            fhth: item.fhth === null || item.fhth === undefined ? 0 : item.fhth,
+            wsh: item.wsh || 0,
+            sh: item.sh || 0,
+            sb: item.sb || 0,
+            fhth: item.fhth || 0,
           };
-        })}        
+        })}
         columns={[
           {
             title: "序号",
@@ -44,7 +44,7 @@ const Audit: React.FC = () => {
           {
             title: "未审核",
             dataIndex: "wsh",
-          },          
+          },
           {
             title: "已审核",
             dataIndex: "sh",
