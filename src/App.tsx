@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
   UploadOutlined,
   UserOutlined,
   VideoCameraOutlined,
-} from '@ant-design/icons';
-import { Button, Layout, Menu, Table, theme } from 'antd';
-import audit from './server/apis/audt';
-import './App.css'
+} from "@ant-design/icons";
+import { Button, Layout, Menu, Table, theme } from "antd";
+import audit from "./server/apis/audt";
+import "./App.css";
 
 const { Header, Sider, Content } = Layout;
 
@@ -17,14 +17,16 @@ const App: React.FC = () => {
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
-  const [list, setList] = useState([])
+  const [list, setList] = useState([]);
 
   useEffect(() => {
     (async () => {
-      const {data} = await audit().list()
-      setList(data)
-    })()
-  }, [])
+      const { data } = await audit().list();
+      if (Array.isArray(data)) {
+        setList(data);
+      }
+    })();
+  }, []);
 
   return (
     <Layout>
@@ -33,22 +35,22 @@ const App: React.FC = () => {
         <Menu
           theme="dark"
           mode="inline"
-          defaultSelectedKeys={['1']}
+          defaultSelectedKeys={["1"]}
           items={[
             {
-              key: '1',
+              key: "1",
               icon: <UserOutlined />,
-              label: 'nav 1',
+              label: "nav 1",
             },
             {
-              key: '2',
+              key: "2",
               icon: <VideoCameraOutlined />,
-              label: 'nav 2',
+              label: "nav 2",
             },
             {
-              key: '3',
+              key: "3",
               icon: <UploadOutlined />,
-              label: 'nav 3',
+              label: "nav 3",
             },
           ]}
         />
@@ -60,7 +62,7 @@ const App: React.FC = () => {
             icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
             onClick={() => setCollapsed(!collapsed)}
             style={{
-              fontSize: '16px',
+              fontSize: "16px",
               width: 64,
               height: 64,
             }}
@@ -68,30 +70,40 @@ const App: React.FC = () => {
         </Header>
         <Content
           style={{
-            margin: '24px 16px',
+            margin: "24px 16px",
             padding: 24,
             minHeight: 280,
             background: colorBgContainer,
             borderRadius: borderRadiusLG,
-            width: '100%'
+            width: "100%",
           }}
         >
-          <Table dataSource={list} columns={[{
-            title: '序号',
-            dataIndex: ''
-          }, {
-            title: '日期',
-            dataIndex: 'collecttime'
-          }, {
-            title: '未审核',
-            dataIndex: 'wsh'
-          }, {
-            title: '待上报',
-            dataIndex: 'sb'
-          } , {
-            title: '复核退回',
-            dataIndex: 'fhth'
-          }]} />
+          <Table
+            size="small"
+            dataSource={list}
+            columns={[
+              {
+                title: "序号",
+                dataIndex: "",
+              },
+              {
+                title: "日期",
+                dataIndex: "collecttime",
+              },
+              {
+                title: "未审核",
+                dataIndex: "wsh",
+              },
+              {
+                title: "待上报",
+                dataIndex: "sb",
+              },
+              {
+                title: "复核退回",
+                dataIndex: "fhth",
+              },
+            ]}
+          />
         </Content>
       </Layout>
     </Layout>
