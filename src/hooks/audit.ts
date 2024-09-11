@@ -22,3 +22,25 @@ export const useAuditDetail = () => {
 
   return { getAuditDetail, auditDetails };
 };
+
+export const useCityTree = () => {
+  const [citieTree, setCitieTree] = useState<cityTreeResult[]>([]);
+
+  async function getCitieTree() {
+    const { data } = await auditApi().cityTree();
+    setCitieTree(data);
+  }
+
+  return { getCitieTree, citieTree };
+};
+
+export const useAuditSource = () => {
+  const [auditSources, setAuditSources] = useState<AduitDetailResults[]>([]);
+
+  async function getAuditSource(params: AuditSouceParams) {
+    const { data } = await auditApi().source(params);
+    setAuditSources(data);
+  }
+
+  return { getAuditSource, auditSources };
+};

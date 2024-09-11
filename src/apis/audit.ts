@@ -10,7 +10,9 @@ export default function auditApi() {
     detail(data?: AduitDetailParams) {
       return post("/api/AuditData/GetAuditDataDay", data || {});
     },
-    cityTree() {
+    cityTree(): Promise<{
+      data: cityTreeResult[];
+    }> {
       return post("/api/AuditData/GetAuditLeftTree", { rnd: Math.random() });
     },
     source(data?: AuditSouceParams) {

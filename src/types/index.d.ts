@@ -22,11 +22,12 @@ type AduitDetailResults = {
   stationname: string;
   stationid: number;
   collecttime: string;
+  open: boolean;
 };
 
 type AuditSouceParams = {
   begiontime: string;
-  stationid: number;
+  stationid: number | string;
   stationname: string;
   state: "audit";
   smallstate: number;
@@ -35,4 +36,14 @@ type AuditSouceParams = {
 type CitiesResult = {
   name: string;
   nodecode: string;
+};
+
+type cityTreeResult = {
+  key: string;
+  title: string;
+  id: string;
+  pId: string;
+  name: string;
+  open: boolean;
+  children?: cityTreeResult[];
 };
