@@ -10,5 +10,11 @@ export default function auditApi() {
     detail(data?: AduitDetailParams) {
       return post("/api/AuditData/GetAuditDataDay", data || {});
     },
+    cityTree() {
+      return post("/api/AuditData/GetAuditLeftTree", { rnd: Math.random() });
+    },
+    source(data?: AuditSouceParams) {
+      return post("/api/AuditData/GetAuditSource", data || {});
+    },
   };
 }

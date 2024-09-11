@@ -17,19 +17,21 @@ function App() {
           onSelect={(item) => {
             router.navigate(routes[+item.key].path);
           }}
-          items={routes.map((item, idx) => ({
-            key: idx,
-            label: item.name,
-            icon: item.icon,
-            path: item.path,
-          }))}
+          items={routes
+            .filter((item) => !item.hideInMenu)
+            .map((item, idx) => ({
+              key: idx,
+              label: item.name,
+              icon: item.icon,
+              path: item.path,
+            }))}
         />
       </Sider>
       <Layout>
         <Content
           style={{
             width: "100%",
-            padding: 10
+            padding: 10,
           }}
         >
           <RouterProvider router={router} />

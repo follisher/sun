@@ -18,6 +18,20 @@ type AduitDetailParams = {
   state: 0 | "shenhe" | "shangbao" | "tuihui";
 };
 
+type AduitDetailResults = {
+  stationname: string;
+  stationid: number;
+  collecttime: string;
+};
+
+type AuditSouceParams = {
+  begiontime: string;
+  stationid: number;
+  stationname: string;
+  state: "audit";
+  smallstate: number;
+};
+
 type CitiesResult = {
   name: string;
   nodecode: string;

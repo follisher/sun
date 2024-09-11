@@ -3,6 +3,7 @@ import { Card, DatePicker, Form, Input, Select, Space, Table } from "antd";
 import { useCities } from "../../hooks/public";
 import { useAuditDetail } from "../../hooks/audit";
 import dayjs from "dayjs";
+import router from "../../router";
 
 function Detail() {
   const { cities, getCities } = useCities();
@@ -23,6 +24,10 @@ function Detail() {
       statetype: "audit",
       state: formData.state,
     });
+  }
+
+  function navigateToSource(stationid: number) {
+    router.navigate(`/source/${stationid}`);
   }
 
   return (
@@ -79,6 +84,9 @@ function Detail() {
           {
             title: "站点名称",
             dataIndex: "stationname",
+            render: (text, record) => (
+              <a onClick={() => navigateToSource(record.stationid)}>{text}</a>
+            ),
           },
           {
             title: "审核状态",

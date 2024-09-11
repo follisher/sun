@@ -13,7 +13,7 @@ export const useAudit = () => {
 };
 
 export const useAuditDetail = () => {
-  const [auditDetails, setAuditDetail] = useState<AduitResult[]>([]);
+  const [auditDetails, setAuditDetail] = useState<AduitDetailResults[]>([]);
 
   async function getAuditDetail(params?: AduitDetailParams) {
     const { data } = await auditApi().detail(params);
