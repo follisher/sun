@@ -1,37 +1,45 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Card, DatePicker, Form, Space, Table } from "antd";
-import dayjs from 'dayjs'
-import auditApi from "../../apis/audit";
+import dayjs from "dayjs";
 import "./index.css";
+import { useAudit } from "../../hooks/audit";
 
 const Audit: React.FC = () => {
-  const [list, setList] = useState<AduitResult[]>([]);
+  const { getAuditList, audits } = useAudit();
+  const [form] = Form.useForm();
 
   useEffect(() => {
-    (async () => {
-      const { data } = await auditApi().list({
-        begiontime: "2024-09-02",
-        endtime: "2024-09-09",
-      });
-      if (Array.isArray(data)) {
-        setList(data);
-      }
-    })();
+    handlerFormChanged();
   }, []);
 
+  function handlerFormChanged() {
+    const formData = form.getFieldsValue();
+    getAuditList({
+      begiontime: formData.daterange[0].format("YYYY-MM-DD"),
+      endtime: formData.daterange[1].format("YYYY-MM-DD"),
+    });
+  }
+
   return (
-    <Space direction="vertical"  style={{width: '100%'}}>
+    <Space direction="vertical" style={{ width: "100%" }}>
       <Card size="small" title="审核概况">
-        <Form layout="inline">
+        <Form
+          form={form}
+          layout="inline"
+          onValuesChange={handlerFormChanged}
+          initialValues={{
+            daterange: [dayjs().subtract(7, "day"), dayjs()],
+          }}
+        >
           <Form.Item name="daterange">
-            <DatePicker.RangePicker format={'YYYY-MM-DD'} defaultValue={[dayjs(new Date()).subtract(7, 'day'), dayjs(new Date())]} />
+            <DatePicker.RangePicker format={"YYYY-MM-DD"} />
           </Form.Item>
         </Form>
       </Card>
       <Table
         key="key"
         size="small"
-        dataSource={list.map((item, index) => {
+        dataSource={audits.map((item, index) => {
           return {
             ...item,
             key: index + 1,
