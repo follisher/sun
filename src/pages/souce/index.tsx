@@ -1,13 +1,16 @@
-import { Card, Space, Table, Tree } from "antd";
+import { Card, DatePicker, Form, Space, Table, Tree } from "antd";
 import { useAuditSource, useCityTree } from "../../hooks/audit";
 import { Key, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import dayjs from 'dayjs'
+import { useForm } from "antd/es/form/Form";
 
 function Source() {
   const { citieTree, getCitieTree } = useCityTree();
   const { auditSources, getAuditSource } = useAuditSource();
-  const [selectedKeys, setSelectedKeys] = useState<Key[]>([]);
   const params = useParams<{ id: string }>();
+  const [selectedKeys, setSelectedKeys] = useState<Key[]>([params?.id as string]);
+  const [form] = useForm()
 
   useEffect(() => {
     getCitieTree();
@@ -35,6 +38,7 @@ function Source() {
       state: "audit",
       smallstate: 0,
     });
+    setSelectedKeys([node.id])
   }
 
   return (
@@ -45,7 +49,7 @@ function Source() {
           expandedKeys={[
             (citieTree.find((item) => !item.open) as cityTreeResult)?.id,
           ]}
-          selectedKeys={[params.id as Key]}
+          selectedKeys={selectedKeys}
           treeData={citieTree
             .filter((item) => !item.open)
             .map((item) => {
@@ -73,7 +77,42 @@ function Source() {
         />
       </Card>
       <Card>
-        <Table dataSource={auditSources} />
+        <Space direction="vertical">
+          <Card>
+            <Form form={form}>
+              <Form.Item name="cobegiontime">
+                <DatePicker />
+              </Form.Item>
+            </Form>
+          </Card>
+          <Table key="id" columns={[{
+            title: '序号',
+            dataIndex: 'key'
+          }, {
+            title: '时间',
+            dataIndex: 'collecttime',
+            render(val) {
+              return dayjs(val).format('YYYY-MM-DD')
+            }
+          }, {
+            title: 'PM10(μg/m3)',
+            dataIndex: 'pm10_val'
+          }, {
+            title: 'PM2.5(μg/m3)',
+            dataIndex: 'pm25_val'
+          }, {
+            title: 'SO2(μg/m3)',
+            dataIndex: 'so2_val'
+          }, {
+            title: 'NO2(μg/m3)',
+            dataIndex: 'no2_val'
+          }, {
+            title: 'CO(mg/m3)',
+            dataIndex: 'co_val'
+          }, {
+            title: 'O3(μg/m3)',
+            dataIndex: 'o3_val'
+          }]} dataSource={auditSources.map((item, key) => ({ ...item, key: key + 1 }))} /></Space>
       </Card>
     </Space>
   );
