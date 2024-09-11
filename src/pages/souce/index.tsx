@@ -42,30 +42,26 @@ function Source() {
       <Card>
         <Tree
           onSelect={handlerTreeClick}
-          expandedKeys={["0"]}
-          selectedKeys={selectedKeys}
+          expandedKeys={[
+            (citieTree.find((item) => !item.open) as cityTreeResult)?.id,
+          ]}
+          selectedKeys={[params.id as Key]}
           treeData={citieTree
             .filter((item) => !item.open)
             .map((item) => {
-              // if (params && item.id === params?.id) {
-              //   setSelectedKeys([item.id]);
-              // }
               return {
                 id: item.id,
-                key: "0",
+                key: item.id,
                 title: item.name,
                 pId: item.pId,
                 open: item.open,
                 name: item.name,
                 children: citieTree
                   .filter((child) => child.pId === item.id)
-                  .map((child, idx) => {
-                    // if (params && child.id === params?.id) {
-                    //   setSelectedKeys([child.id]);
-                    // }
+                  .map((child) => {
                     return {
                       id: child.id,
-                      key: "0-" + idx,
+                      key: child.id,
                       title: child.name,
                       pId: child.pId,
                       open: child.open,
