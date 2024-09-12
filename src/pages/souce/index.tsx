@@ -1,4 +1,4 @@
-import { Card, DatePicker, Form, Input, Popconfirm, Space, Table, Tag, Tree } from "antd";
+import { Card, DatePicker, Form, Popconfirm, Space, Table, Tag, Tree } from "antd";
 import { useAuditSource, useCityTree } from "../../hooks/audit";
 import { Key, useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
@@ -67,6 +67,7 @@ function Source() {
         </Card>
         <Card size="small" >
           <Tree
+            showLine
             onSelect={handlerTreeClick}
             expandedKeys={[
               (citieTree.find((item) => !item.open) as cityTreeResult)?.id,
