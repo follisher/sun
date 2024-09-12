@@ -1,7 +1,7 @@
 import { Card, DatePicker, Form, Space, Table, Tree } from "antd";
 import { useAuditSource, useCityTree } from "../../hooks/audit";
 import { Key, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import dayjs from 'dayjs'
 import { useForm } from "antd/es/form/Form";
 
@@ -9,11 +9,13 @@ function Source() {
   const { citieTree, getCitieTree } = useCityTree();
   const { auditSources, getAuditSource } = useAuditSource();
   const params = useParams<{ id: string }>();
+  const [search] = useSearchParams()
   const [selectedKeys, setSelectedKeys] = useState<Key[]>([params?.id as string]);
+  const [begiontime, setBegiontime] = useState<string>(search.get('date') || dayjs().format('YYYY-MM-DD'))
   const [form] = useForm()
 
   useEffect(() => {
-    getCitieTree();
+    getCitieTree({collectTime: begiontime, type: 'shenhe'});
   }, []);
 
   useEffect(() => {
@@ -21,7 +23,7 @@ function Source() {
       const city = citieTree.find((item) => item.id === params.id);
       if (!city) return;
       getAuditSource({
-        begiontime: "2021-01-01",
+        begiontime,
         stationid: city.id,
         stationname: city.name,
         state: "audit",
@@ -32,7 +34,7 @@ function Source() {
 
   function handlerTreeClick(_: Key[], { node }: { node: cityTreeResult }) {
     getAuditSource({
-      begiontime: "2021-01-01",
+      begiontime,
       stationid: node.id,
       stationname: node.name,
       state: "audit",
@@ -79,13 +81,13 @@ function Source() {
       <Card>
         <Space direction="vertical">
           <Card>
-            <Form form={form}>
-              <Form.Item name="cobegiontime">
+            <Form form={form} initialValues={{ begiontime: dayjs(begiontime) }}>
+              <Form.Item name="begiontime">
                 <DatePicker />
               </Form.Item>
             </Form>
           </Card>
-          <Table key="id" columns={[{
+          <Table key="key" columns={[{
             title: '序号',
             dataIndex: 'key'
           }, {
@@ -112,7 +114,7 @@ function Source() {
           }, {
             title: 'O3(μg/m3)',
             dataIndex: 'o3_val'
-          }]} dataSource={auditSources.map((item, key) => ({ ...item, key: key + 1 }))} /></Space>
+          }]} dataSource={auditSources.filter(item => {return dayjs(item.collecttime).toString() !== 'Invalid Date'}).map((item, key) => ({ ...item, key: key + 1 }))} /></Space>
       </Card>
     </Space>
   );

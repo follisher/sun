@@ -26,8 +26,8 @@ function Detail() {
     });
   }
 
-  function navigateToSource(stationid: number) {
-    router.navigate(`/source/${stationid}`);
+  function navigateToSource(record: AduitDetailResults) {
+    router.navigate(`/source/${record.stationid}?date=${record.collecttime}`);
   }
 
   return (
@@ -85,7 +85,7 @@ function Detail() {
             title: "站点名称",
             dataIndex: "stationname",
             render: (text, record) => (
-              <a onClick={() => navigateToSource(record.stationid)}>{text}</a>
+              <a onClick={() => navigateToSource(record)}>{text}</a>
             ),
           },
           {
