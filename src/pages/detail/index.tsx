@@ -37,7 +37,7 @@ function Detail() {
           form={form}
           layout="inline"
           onValuesChange={handlerFormChange}
-          initialValues={{ daterange: [dayjs().subtract(3, "day"), dayjs()] }}
+          initialValues={{ daterange: [dayjs().subtract(3, "day"), dayjs()], state: 0, areapath: '000000_970000_97120000_97122400' }}
         >
           <Form.Item name="daterange">
             <DatePicker.RangePicker />

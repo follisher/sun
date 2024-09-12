@@ -1,18 +1,16 @@
 import { Layout, Menu } from "antd";
-import { useState } from "react";
 import { RouterProvider } from "react-router-dom";
 import router, { routes } from "./router";
 
-const { Sider, Content } = Layout;
+const { Content, Header } = Layout;
 function App() {
-  const [collapsed, setCollapsed] = useState(false);
   return (
     <Layout>
-      <Sider trigger={null} collapsible collapsed={collapsed}>
+      <Header>
         <div className="demo-logo-vertical" />
         <Menu
           theme="dark"
-          mode="inline"
+          mode="horizontal"
           defaultSelectedKeys={["1"]}
           onSelect={(item) => {
             router.navigate(routes[+item.key].path);
@@ -26,7 +24,7 @@ function App() {
               path: item.path,
             }))}
         />
-      </Sider>
+      </Header>
       <Layout>
         <Content
           style={{
