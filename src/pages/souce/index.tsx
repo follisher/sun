@@ -64,19 +64,8 @@ function Source() {
     setSearch({ date });
   }
 
-  function render(val: number, record: AuditSourceResults) {
-    return val < 0 ? (
-      <Popconfirm
-        icon={null}
-        title=""
-        trigger="click"
-        description={<FixContract data={record} />}
-      >
-        <Tag color="red">{val}</Tag>
-      </Popconfirm>
-    ) : (
-      val
-    );
+  function render(val: number, record: any) {
+    return val <= 0 ? <Popconfirm title="修约" trigger="click" description={<FixContract data={record} />}><Tag color="red">{val}</Tag></Popconfirm> : val
   }
 
   return (
@@ -133,56 +122,40 @@ function Source() {
       <Card size="small">
         <Table<AuditSourceResults>
           size="small"
-          scroll={{ x: 100, y: document.body.offsetHeight - 260 }}
-          key="key"
-          pagination={{ pageSize: 100 }}
-          columns={[
-            {
-              title: "序号",
-              dataIndex: "key",
-              width: 60,
-            },
-            {
-              title: "时间",
-              dataIndex: "collecttime",
-            },
-            {
-              title: "PM10(μg/m3)",
-              dataIndex: "pm10_val",
-              render,
-            },
-            {
-              title: "PM2.5(μg/m3)",
-              dataIndex: "pm25_val",
-              render,
-            },
-            {
-              title: "SO2(μg/m3)",
-              dataIndex: "so2_val",
-              render,
-            },
-            {
-              title: "NO2(μg/m3)",
-              dataIndex: "no2_val",
-              render,
-            },
-            {
-              title: "CO(mg/m3)",
-              dataIndex: "co_val",
-              render,
-            },
-            {
-              title: "O3(μg/m3)",
-              dataIndex: "o3_val",
-              render,
-            },
-          ]}
-          dataSource={auditSources
-            .filter((item) => {
-              return dayjs(item.collecttime).toString() !== "Invalid Date";
-            })
-            .map((item, key) => ({ ...item, key: key + 1 }))}
-        />
+          scroll={{ x: 100, y: document.body.offsetHeight - 260 }} key="key" columns={[{
+            title: '序号',
+            dataIndex: 'key'
+          }, {
+            title: '时间',
+            dataIndex: 'collecttime',
+            render(val) {
+              return dayjs(val).format('YYYY-MM-DD HH:mm')
+            }
+          }, {
+            title: 'PM10(μg/m3)',
+            dataIndex: 'pm10_val',
+            render
+          }, {
+            title: 'PM2.5(μg/m3)',
+            dataIndex: 'pm25_val',
+            render
+          }, {
+            title: 'SO2(μg/m3)',
+            dataIndex: 'so2_val',
+            render
+          }, {
+            title: 'NO2(μg/m3)',
+            dataIndex: 'no2_val',
+            render
+          }, {
+            title: 'CO(mg/m3)',
+            dataIndex: 'co_val',
+            render
+          }, {
+            title: 'O3(μg/m3)',
+            dataIndex: 'o3_val',
+            render
+          }]} dataSource={auditSources.filter(item => { return dayjs(item.collecttime).toString() !== 'Invalid Date' }).map((item, key) => ({ ...item, key: key + 1 }))} pagination={false} />
       </Card>
     </Space>
   );
