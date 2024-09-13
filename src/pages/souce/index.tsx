@@ -14,10 +14,15 @@ import { useParams, useSearchParams } from "react-router-dom";
 import dayjs from "dayjs";
 import { useForm } from "antd/es/form/Form";
 import FixContract from "./fix-contract";
+import { FetchState } from "../../main";
 
 function Source() {
-  const { citieTree, getCitieTree } = useCityTree();
-  const { auditSources, getAuditSource } = useAuditSource();
+  const { citieTree, getCitieTree, fetchState } = useCityTree();
+  const {
+    auditSources,
+    getAuditSource,
+    fetchState: fetchAuditState,
+  } = useAuditSource();
   const params = useParams<{ id: string }>();
   const [search, setSearch] = useSearchParams();
   const [selectedKeys, setSelectedKeys] = useState<Key[]>([
@@ -46,7 +51,7 @@ function Source() {
     }
   }, [citieTree]);
 
-  function handlerTreeClick(_: Key[], { node }: { node: cityTreeResult }) {
+  function handlerTreeClick(_: Key[], { node }: { node: CityTreeResult }) {
     getAuditSource({
       begiontime,
       stationid: node.id,
@@ -81,7 +86,7 @@ function Source() {
 
   return (
     <Space align="start">
-      <Space direction="vertical">
+      <Space direction="vertical" align="start">
         <Card size="small" style={{ width: 300 }}>
           <Form
             layout="inline"
@@ -95,12 +100,12 @@ function Source() {
             </Form.Item>
           </Form>
         </Card>
-        <Card size="small">
+        <Card size="small" loading={fetchState === FetchState.Processing}>
           <Tree
             showLine
             onSelect={handlerTreeClick}
             expandedKeys={[
-              (citieTree.find((item) => !item.open) as cityTreeResult)?.id,
+              (citieTree.find((item) => !item.open) as CityTreeResult)?.id,
             ]}
             selectedKeys={selectedKeys}
             treeData={citieTree
@@ -135,6 +140,7 @@ function Source() {
           size="small"
           scroll={{ x: 100, y: document.body.offsetHeight - 260 }}
           key="key"
+          loading={fetchAuditState === FetchState.Processing}
           pagination={{ pageSize: 100 }}
           columns={[
             {

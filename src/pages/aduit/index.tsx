@@ -3,9 +3,10 @@ import { Card, DatePicker, Form, Space, Table } from "antd";
 import dayjs from "dayjs";
 import "./index.css";
 import { useAudit } from "../../hooks/audit";
+import { FetchState } from "../../main";
 
 const Audit: React.FC = () => {
-  const { getAuditList, audits } = useAudit();
+  const { getAuditList, audits, fetchState } = useAudit();
   const [form] = Form.useForm();
 
   useEffect(() => {
@@ -39,6 +40,7 @@ const Audit: React.FC = () => {
       <Table
         key="key"
         size="small"
+        loading={fetchState === FetchState.Processing}
         dataSource={audits.map((item, index) => {
           return {
             ...item,

@@ -4,6 +4,9 @@ import router, { routes } from "./router";
 
 const { Content, Header } = Layout;
 function App() {
+  const { key } = routes.find((item) => item.path === location.pathname) || {
+    key: "",
+  };
   return (
     <Layout>
       <Header>
@@ -11,14 +14,16 @@ function App() {
         <Menu
           theme="dark"
           mode="horizontal"
-          defaultSelectedKeys={["1"]}
+          defaultSelectedKeys={[key]}
           onSelect={(item) => {
-            router.navigate(routes[+item.key].path);
+            router.navigate(
+              routes.find((route) => route.key === item.key)?.path || "/"
+            );
           }}
           items={routes
             .filter((item) => !item.hideInMenu)
-            .map((item, idx) => ({
-              key: idx,
+            .map((item) => ({
+              key: item.key,
               label: item.name,
               icon: item.icon,
               path: item.path,

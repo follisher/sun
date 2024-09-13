@@ -4,10 +4,15 @@ import { useCities } from "../../hooks/public";
 import { useAuditDetail } from "../../hooks/audit";
 import dayjs from "dayjs";
 import router from "../../router";
+import { FetchState } from "../../main";
 
 function Detail() {
-  const { cities, getCities } = useCities();
-  const { auditDetails, getAuditDetail } = useAuditDetail();
+  const { cities, getCities, fetchState } = useCities();
+  const {
+    auditDetails,
+    getAuditDetail,
+    fetchState: fetchAuditState,
+  } = useAuditDetail();
   const [form] = Form.useForm();
 
   useEffect(() => {
@@ -37,13 +42,18 @@ function Detail() {
           form={form}
           layout="inline"
           onValuesChange={handlerFormChange}
-          initialValues={{ daterange: [dayjs().subtract(3, "day"), dayjs()], state: 0, areapath: '000000_970000_97120000_97122400' }}
+          initialValues={{
+            daterange: [dayjs().subtract(3, "day"), dayjs()],
+            state: 0,
+            areapath: "000000_970000_97120000_97122400",
+          }}
         >
           <Form.Item name="daterange">
             <DatePicker.RangePicker />
           </Form.Item>
           <Form.Item name="areapath">
             <Select
+              loading={fetchState === FetchState.Processing}
               placeholder="城市"
               options={cities?.map((city) => ({
                 label: city.name,
@@ -72,6 +82,7 @@ function Detail() {
         key={"key"}
         size="small"
         dataSource={auditDetails}
+        loading={fetchAuditState === FetchState.Processing}
         columns={[
           {
             title: "序号",

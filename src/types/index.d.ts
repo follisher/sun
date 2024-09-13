@@ -86,12 +86,17 @@ type CitiesResult = {
   nodecode: string;
 };
 
-type cityTreeResult = {
+type CityTreeParams = {
+  collectTime: string;
+  type: string;
+};
+
+type CityTreeResult = {
   key: string;
   title: string;
   id: string;
   pId: string;
   name: string;
   open: boolean;
-  children?: cityTreeResult[];
+  children?: CityTreeResult[];
 };
