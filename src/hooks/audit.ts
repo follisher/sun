@@ -26,7 +26,7 @@ export const useAuditDetail = () => {
 export const useCityTree = () => {
   const [citieTree, setCitieTree] = useState<cityTreeResult[]>([]);
 
-  async function getCitieTree(params: {collectTime: string; type: string}) {
+  async function getCitieTree(params: { collectTime: string; type: string }) {
     const { data } = await auditApi().cityTree(params);
     setCitieTree(data);
   }
@@ -35,7 +35,7 @@ export const useCityTree = () => {
 };
 
 export const useAuditSource = () => {
-  const [auditSources, setAuditSources] = useState<AduitDetailResults[]>([]);
+  const [auditSources, setAuditSources] = useState<AuditSourceResults[]>([]);
 
   async function getAuditSource(params: AuditSouceParams) {
     const { data } = await auditApi().source(params);
