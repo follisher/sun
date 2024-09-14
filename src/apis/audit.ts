@@ -25,5 +25,8 @@ export default function auditApi() {
     source(data?: AuditSouceParams) {
       return post("/api/AuditData/GetAuditSource", data || {});
     },
+    save(data: AuditDataType) {
+      return post(`/api/AuditData/SaveAuditData?rnd=${Math.random()}`, data);
+    },
   };
 }

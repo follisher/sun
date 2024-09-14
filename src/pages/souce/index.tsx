@@ -1,13 +1,4 @@
-import {
-  Card,
-  DatePicker,
-  Form,
-  Popconfirm,
-  Space,
-  Table,
-  Tag,
-  Tree,
-} from "antd";
+import { Card, DatePicker, Form, Space, Table, Tree } from "antd";
 import { useAuditSource, useCityTree } from "../../hooks/audit";
 import { Key, useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
@@ -69,20 +60,16 @@ function Source() {
     setSearch({ date });
   }
 
-  function render(val: number, record: AuditSourceResults) {
-    return val <= 0 ? (
-      <Popconfirm
-        icon={null}
-        title=""
-        trigger="click"
-        description={<FixContract data={record} />}
-      >
-        <Tag color="red">{val}</Tag>
-      </Popconfirm>
-    ) : (
-      val
-    );
-  }
+  const render =
+    (dataIndex: keyof AuditSourceResults) =>
+    (val: number, record: AuditSourceResults) => {
+      const target = dataIndex.split("_")[0];
+      return val <= 0 ? (
+        <FixContract target={target} value={val} data={record} />
+      ) : (
+        val
+      );
+    };
 
   const sorter =
     (dataIndex: keyof AuditSourceResults) =>
@@ -122,7 +109,7 @@ function Source() {
   }) => ({
     title,
     dataIndex,
-    render,
+    render: render(dataIndex),
     sorter: sorter(dataIndex),
     filters,
     onFilter: onFilter(dataIndex),

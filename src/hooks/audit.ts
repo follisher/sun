@@ -40,6 +40,23 @@ export const useAuditDetail = () => {
   return { getAuditDetail, auditDetails, fetchState };
 };
 
+export const useAuditSave = () => {
+  const [fetchState, setFetchState] = useState(FetchState.Pending);
+  async function saveAudit(data: AuditDataType) {
+    setFetchState(FetchState.Processing);
+    auditApi()
+      .save(data)
+      .then(() => {
+        setFetchState(FetchState.Success);
+      })
+      .catch(() => {
+        setFetchState(FetchState.Fail);
+      });
+  }
+
+  return { saveAudit, fetchState };
+};
+
 export const useCityTree = () => {
   const [citieTree, setCitieTree] = useState<CityTreeResult[]>([]);
   const [fetchState, setFetchState] = useState(FetchState.Pending);

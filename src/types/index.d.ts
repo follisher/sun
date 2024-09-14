@@ -10,6 +10,16 @@ type AduitResult = {
   fhth: number;
 };
 
+type AuditDataType = {
+  type: number;
+  stationid: number;
+  stationname: string;
+  row: string;
+  state: string;
+  areapath: string;
+  remark: string;
+};
+
 type AduitDetailParams = {
   begiontime: string;
   endtime: string;
