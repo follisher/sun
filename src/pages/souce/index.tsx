@@ -84,6 +84,50 @@ function Source() {
     );
   }
 
+  const sorter =
+    (dataIndex: keyof AuditSourceResults) =>
+    (a: AuditSourceResults, b: AuditSourceResults) =>
+      (a[dataIndex] as number) - (b[dataIndex] as number);
+
+  const filters = [
+    {
+      text: "小于零",
+      value: "ltz",
+    },
+    {
+      text: "等于零",
+      value: "ez",
+    },
+  ];
+
+  const onFilter =
+    (dataIndex: keyof AuditSourceResults) =>
+    (value: "ltz" | "ez" | boolean | Key, record: AuditSourceResults) => {
+      switch (value) {
+        case "ltz":
+          return (record[dataIndex] as number) < 0;
+        case "ez":
+          return record[dataIndex] === 0;
+        default:
+          return true;
+      }
+    };
+
+  const columnWithFun = ({
+    title,
+    dataIndex,
+  }: {
+    title: string;
+    dataIndex: keyof AuditSourceResults;
+  }) => ({
+    title,
+    dataIndex,
+    render,
+    sorter: sorter(dataIndex),
+    filters,
+    onFilter: onFilter(dataIndex),
+  });
+
   return (
     <Space align="start">
       <Space direction="vertical" align="start">
@@ -105,10 +149,10 @@ function Source() {
             showLine
             onSelect={handlerTreeClick}
             expandedKeys={[
-              (citieTree.find((item) => !item.open) as CityTreeResult)?.id,
+              (citieTree?.find((item) => !item.open) as CityTreeResult)?.id,
             ]}
             selectedKeys={selectedKeys}
-            treeData={citieTree
+            treeData={(citieTree || [])
               .filter((item) => !item.open)
               .map((item) => {
                 return {
@@ -138,10 +182,10 @@ function Source() {
       <Card size="small">
         <Table<AuditSourceResults>
           size="small"
-          scroll={{ x: 100, y: document.body.offsetHeight - 260 }}
+          scroll={{ x: 100, y: document.body.offsetHeight - 150 }}
           key="key"
           loading={fetchAuditState === FetchState.Processing}
-          pagination={{ pageSize: 100 }}
+          pagination={false}
           columns={[
             {
               title: "序号",
@@ -152,36 +196,30 @@ function Source() {
               title: "时间",
               dataIndex: "collecttime",
             },
-            {
+            columnWithFun({
               title: "PM10(μg/m3)",
               dataIndex: "pm10_val",
-              render,
-            },
-            {
+            }),
+            columnWithFun({
               title: "PM2.5(μg/m3)",
               dataIndex: "pm25_val",
-              render,
-            },
-            {
+            }),
+            columnWithFun({
               title: "SO2(μg/m3)",
               dataIndex: "so2_val",
-              render,
-            },
-            {
+            }),
+            columnWithFun({
               title: "NO2(μg/m3)",
               dataIndex: "no2_val",
-              render,
-            },
-            {
+            }),
+            columnWithFun({
               title: "CO(mg/m3)",
               dataIndex: "co_val",
-              render,
-            },
-            {
+            }),
+            columnWithFun({
               title: "O3(μg/m3)",
               dataIndex: "o3_val",
-              render,
-            },
+            }),
           ]}
           dataSource={auditSources
             .filter((item) => {
